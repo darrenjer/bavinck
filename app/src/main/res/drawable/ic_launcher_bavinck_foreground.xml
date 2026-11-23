@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alternative app icon: Herman Bavinck's head wearing fluorescent pink headphones.
+     bavinck_head.png is a full 108dp canvas (head already positioned, transparent around it),
+     so it scales together with the headphone drawing at every icon size. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:src="@drawable/bavinck_head"
+            android:gravity="fill"
+            android:filter="true" />
+    </item>
+    <item android:drawable="@drawable/ic_bavinck_headphones" />
+</layer-list>

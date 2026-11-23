@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>The Wonderful Works of God — Audiobook</title>
+<style>
+  :root {
+    --bg: #FAF6F0;
+    --surface: #F2EBE1;
+    --card: #FFFFFF;
+    --text: #2C241E;
+    --muted: #6E5D50;
+    --accent: #7A4B2A;
+    --accent-soft: rgba(122, 75, 42, 0.14);
+    --highlight-para: rgba(122, 75, 42, 0.09);
+    --border: #E0D5C7;
+    --bubble-bg: #2C241E;
+    --bubble-text: #FAF6F0;
+    --font-size: 19px;
+  }
+
+  [data-theme="dark"] {
+    --bg: #161412;
+    --surface: #211E1B;
+    --card: #2A2521;
+    --text: #EAE2D7;
+    --muted: #A39689;
+    --accent: #D49B6A;
+    --accent-soft: rgba(212, 155, 106, 0.18);
+    --highlight-para: rgba(212, 155, 106, 0.12);
+    --border: #36302B;
+    --bubble-bg: #F4ECE1;
+    --bubble-text: #1E1915;
+  }
+
+  [data-theme="light"] {
+    --bg: #FFFFFF;
+    --surface: #F4F5F7;
+    --card: #FFFFFF;
+    --text: #1A1D20;
+    --muted: #5F6670;
+    --accent: #2B5B84;
+    --accent-soft: rgba(43, 91, 132, 0.12);
+    --highlight-para: rgba(43, 91, 132, 0.08);
+    --border: #E1E4E8;
+    --bubble-bg: #1A1D20;
+    --bubble-text: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.75;
+    transition: background 0.25s, color 0.25s;
+    padding-bottom: 190px;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .header-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .book-meta {
+    display: flex;
+    flex-direction: column;
+  }
+  .book-author {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .book-title {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .icon-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .icon-btn:active { transform: scale(0.96); }
+
+  /* Chapter Switcher Bar */
+  .chapter-nav-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .chapter-nav-bar::-webkit-scrollbar { display: none; }
+
+  .chap-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chap-pill.active {
+    background: var(--accent);
+    color: #FFF;
+    border-color: var(--accent);
+  }
+
+  main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 26px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  h1 {
+    margin: 6px 0 4px;
+    font-size: 26px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    font-style: italic;
+    color: var(--accent);
+    font-size: 17px;
+  }
+
+  .para {
+    font-size: var(--font-size);
+    margin-bottom: 18px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .para.active {
+    background: var(--highlight-para);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
+  .study-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 12px;
+  }
+  .study-box h3 {
+    margin-top: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--accent);
+  }
+  .study-box ol {
+    padding-left: 20px;
+    margin-bottom: 0;
+  }
+  .study-box li {
+    margin-bottom: 14px;
+    font-size: calc(var(--font-size) - 2px);
+  }
+  .study-box li span {
+    color: var(--muted);
+    font-size: calc(var(--font-size) - 3px);
+  }
+
+  /* Scripture Hyperlink Styling */
+  .scripture-ref {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .scripture-ref:hover, .scripture-ref:active {
+    background: var(--accent);
+    color: #FFF;
+  }
+
+  /* Thought-Bubble Pop-up Overlay */
+  #bubbleBackdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 90;
+    backdrop-filter: blur(1px);
+  }
+
+  #thoughtBubble {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    box-sizing: border-box;
+    max-width: 350px;
+    width: calc(100% - 32px);
+    background: var(--bubble-bg);
+    color: var(--bubble-text);
+    border-radius: 22px;
+    padding: 18px 20px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.35);
+    font-family: Georgia, serif;
+    animation: popIn 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  }
+
+  #thoughtBubble::before {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    left: 34px;
+    width: 14px;
+    height: 14px;
+    background: var(--bubble-bg);
+    border-radius: 50%;
+  }
+  #thoughtBubble::after {
+    content: "";
+    position: absolute;
+    bottom: -22px;
+    left: 24px;
+    width: 8px;
+    height: 8px;
+    background: var(--bubble-bg);
+    border-radius: 50%;
+  }
+
+  #thoughtBubble.below::before { bottom: auto; top: -12px; }
+  #thoughtBubble.below::after { bottom: auto; top: -22px; }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.88) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .bubble-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .bubble-ref {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    color: #F4D078;
+  }
+  [data-theme="dark"] .bubble-ref { color: #7A4B2A; }
+  .bubble-version {
+    font-size: 11px;
+    opacity: 0.75;
+    margin-left: 6px;
+  }
+  .bubble-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: inherit;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  [data-theme="dark"] .bubble-close { background: rgba(0,0,0,0.12); }
+  .bubble-text {
+    font-size: 15.5px;
+    line-height: 1.55;
+    margin: 0;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+  .verse-num {
+    font-size: 0.7em;
+    font-weight: 700;
+    vertical-align: super;
+    opacity: 0.7;
+    margin-right: 2px;
+  }
+
+  .chapter-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Bottom Audio Dock */
+  .player-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px 16px;
+    z-index: 40;
+    box-shadow: 0 -4px 18px rgba(0,0,0,0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 740px;
+    margin: 0 auto 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.25s;
+  }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 740px;
+    margin: 0 auto;
+    gap: 8px;
+  }
+
+  .transport {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ctrl-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-btn {
+    background: var(--accent);
+    color: #FFF;
+    border: none;
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  /* Download Chapters panel */
+  #downloadBackdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 110;
+  }
+  #downloadPanel {
+    display: none;
+    position: fixed;
+    z-index: 120;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(560px, calc(100% - 32px));
+    max-height: calc(100% - 48px);
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.35);
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .dl-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dl-header h2 { margin: 0; font-size: 17px; }
+  .dl-status {
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 18px;
+  }
+  .dl-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 8px 8px;
+    overflow-y: auto;
+  }
+  .dl-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 8px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .dl-item:last-child { border-bottom: none; }
+  .dl-item .dl-state { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .dl-item button { white-space: nowrap; }
+
+  .select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .voice-select {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .speed-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body data-theme="sepia">
+
+<header>
+  <div class="header-top">
+    <div class="book-meta">
+      <span class="book-author">Herman Bavinck</span>
+      <span class="book-title">The Wonderful Works of God</span>
+    </div>
+    <div class="toolbar">
+      <button class="icon-btn" onclick="document.getElementById('jsonImporter').click()" title="Import Chapter Pack (.json)">+ Import</button>
+      <input type="file" id="jsonImporter" accept=".json,application/json" style="display:none" onchange="handleJsonImport(event)" />
+      <button class="icon-btn" onclick="openDownloadPanel()" title="Download chapters from the book's website">⬇ Chapters</button>
+      <button class="icon-btn" onclick="changeFontSize(-2)">A−</button>
+      <button class="icon-btn" onclick="changeFontSize(2)">A+</button>
+      <button class="icon-btn" onclick="cycleTheme()" id="themeBtn">Sepia</button>
+    </div>
+  </div>
+  <div class="chapter-nav-bar" id="chapterTabs"></div>
+</header>
+
+<main>
+  <div class="chapter-header">
+    <div class="chapter-label" id="chapLabel"></div>
+    <h1 id="chapTitle"></h1>
+    <div class="subtitle" id="chapSubtitle"></div>
+  </div>
+
+  <div id="readerContent"></div>
+
+  <div class="chapter-footer-nav">
+    <button class="icon-btn" id="prevChapBtn" onclick="switchChapter(currentChapterIdx - 1)">← Previous Section</button>
+    <button class="icon-btn" id="nextChapBtn" onclick="switchChapter(currentChapterIdx + 1)">Next Section →</button>
+  </div>
+</main>
+
+<!-- Download Chapters Panel -->
+<div id="downloadBackdrop" onclick="closeDownloadPanel()"></div>
+<div id="downloadPanel" role="dialog" aria-modal="true" aria-labelledby="dlTitle">
+  <div class="dl-header">
+    <h2 id="dlTitle">Download Chapters</h2>
+    <div>
+      <button class="icon-btn" id="dlAllBtn" onclick="downloadAllMissing()">Download all</button>
+      <button class="icon-btn" onclick="closeDownloadPanel()" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="dl-status" id="dlStatus"></div>
+  <ul class="dl-list" id="dlList"></ul>
+</div>
+
+<!-- Thought Bubble Modal -->
+<div id="bubbleBackdrop" onclick="closeScripture()"></div>
+<div id="thoughtBubble" role="dialog" aria-modal="true">
+  <div class="bubble-header">
+    <div>
+      <span class="bubble-ref" id="bubbleRefTitle"></span>
+      <span class="bubble-version" id="bubbleVersion">WEB</span>
+    </div>
+    <button class="bubble-close" onclick="closeScripture()" aria-label="Close">✕</button>
+  </div>
+  <p class="bubble-text" id="bubbleVerseBody"></p>
+</div>
+
+<!-- Bottom Audio Player -->
+<div class="player-dock">
+  <div class="progress-row">
+    <span id="paraIndicator">Para 1 / 15</span>
+    <div class="progress-bar" onclick="seekProgress(event)">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span id="statusText">Ready</span>
+  </div>
+  <div class="controls-row">
+    <div class="select-group">
+      <select class="speed-select" id="speedSelect" onchange="updateRate(this.value)">
+        <option value="0.75">0.75x</option>
+        <option value="0.9">0.9x</option>
+        <option value="1.0" selected>1.0x</option>
+        <option value="1.15">1.15x</option>
+        <option value="1.3">1.3x</option>
+        <option value="1.5">1.5x</option>
+      </select>
+      <select class="speed-select voice-select" id="voiceSelect" onchange="updateVoice(this.value)" title="Reading Voice">
+        <option value="">Default voice</option>
+      </select>
+    </div>
+
+    <div class="transport">
+      <button class="ctrl-btn" onclick="prevPara()" title="Previous Paragraph">⏮</button>
+      <button class="ctrl-btn play-btn" id="playPauseBtn" onclick="togglePlay()" title="Play / Pause">▶</button>
+      <button class="ctrl-btn" onclick="nextPara()" title="Next Paragraph">⏭</button>
+      <button class="ctrl-btn" onclick="stopAudio()" title="Stop">⏹</button>
+    </div>
+
+    <button class="speed-select" id="autoScrollBtn" onclick="toggleAutoScroll()">Scroll: ON</button>
+  </div>
+</div>
+
+<script>
+// Bible references used by the built-in chapters. The verse text itself is looked up from the
+// World English Bible (public domain, assets/web_bible.txt) when a reference is tapped.
+// Imported chapter packs may add entries with their own "text".
+const SCRIPTURES = {
+  "acts_2_11": { "ref": "Acts 2:11" },
+  "2_pet_3_13": { "ref": "2 Peter 3:13" },
+  "titus_1_1": { "ref": "Titus 1:1" },
+  "2_cor_12_9": { "ref": "2 Corinthians 12:9" },
+  "prov_4_23": { "ref": "Proverbs 4:23" },
+  "eccl_3_11": { "ref": "Ecclesiastes 3:11" },
+  "matt_16_26": { "ref": "Matthew 16:26" },
+  "ps_49_8_9": { "ref": "Psalm 49:8–9" },
+  "1_john_2_17": { "ref": "1 John 2:17" },
+  "1_cor_3_19": { "ref": "1 Corinthians 3:19" },
+  "1_cor_2_18": { "ref": "1 Corinthians 3:18; 2:14" },
+  "col_2_8": { "ref": "Colossians 2:8" },
+  "1_cor_1_21": { "ref": "1 Corinthians 1:21" },
+  "rom_1_21": { "ref": "Romans 1:21" },
+  "prov_3_19": { "ref": "Proverbs 3:19" },
+  "rom_11_33": { "ref": "Romans 11:33" },
+  "1_cor_2_10": { "ref": "1 Corinthians 2:10" },
+  "eph_3_10": { "ref": "Ephesians 3:10" },
+  "col_2_3": { "ref": "Colossians 2:3" },
+  "prov_8_11": { "ref": "Proverbs 8:11" },
+  "prov_2_6": { "ref": "Proverbs 2:6" },
+  "1_sam_2_3": { "ref": "1 Samuel 2:3" },
+  "prov_1_7": { "ref": "Proverbs 1:7" },
+  "1_cor_13_2": { "ref": "1 Corinthians 13:2" },
+  "exod_31_3": { "ref": "Exodus 31:3" },
+  "exod_35_31": { "ref": "Exodus 35:31" },
+  "isa_57_15": { "ref": "Isaiah 57:15" },
+  "acts_17_27": { "ref": "Acts 17:27" },
+  "isa_29_8": { "ref": "Isaiah 29:8" }
+};
+
+/* OLD VERSE TEXTS (copyrighted ESV wording) — no longer used, safe to delete this whole comment.
+const OLD_SCRIPTURES = {
+  "acts_2_11": {
+    "ref": "Acts 2:11",
+    "text": "“...both Jews and proselytes, Cretans and Arabians—we hear them telling in our own tongues the mighty works of God.”"
+  },
+  "2_pet_3_13": {
+    "ref": "2 Peter 3:13",
+    "text": "“But according to his promise we are waiting for new heavens and a new earth in which righteousness dwells.”"
+  },
+  "titus_1_1": {
+    "ref": "Titus 1:1",
+    "text": "“Paul, a servant of God and an apostle of Jesus Christ, for the sake of the faith of God's elect and their knowledge of the truth, which accords with godliness...”"
+  },
+  "2_cor_12_9": {
+    "ref": "2 Corinthians 12:9",
+    "text": "“But he said to me, ‘My grace is sufficient for you, for my power is made perfect in weakness.’ Therefore I will boast all the more gladly of my weaknesses, so that the power of Christ may rest upon me.”"
+  },
+  "prov_4_23": {
+    "ref": "Proverbs 4:23",
+    "text": "“Keep your heart with all vigilance, for from it flow the springs of life.”"
+  },
+  "eccl_3_11": {
+    "ref": "Ecclesiastes 3:11",
+    "text": "“He has made everything beautiful in its time. Also, he has put eternity into man's heart, yet so that he cannot find out what God has done from the beginning to the end.”"
+  },
+  "matt_16_26": {
+    "ref": "Matthew 16:26",
+    "text": "“For what will it profit a man if he gains the whole world and forfeits his soul? Or what shall a man give in return for his soul?”"
+  },
+  "ps_49_8_9": {
+    "ref": "Psalm 49:8–9",
+    "text": "“...for the ransom of their life is costly and can never suffice, that he should live on forever and never see the pit.”"
+  },
+  "1_john_2_17": {
+    "ref": "1 John 2:17",
+    "text": "“And the world is passing away along with its desires, but whoever does the will of God abides forever.”"
+  },
+  "1_cor_3_19": {
+    "ref": "1 Corinthians 3:19",
+    "text": "“For the wisdom of this world is folly with God. For it is written, ‘He catches the wise in their craftiness.’”"
+  },
+  "1_cor_2_18": {
+    "ref": "1 Corinthians 3:18 (cf. 2:14)",
+    "text": "“Let no one deceive himself. If anyone among you thinks that he is wise in this age, let him become a fool that he may become wise.”"
+  },
+  "col_2_8": {
+    "ref": "Colossians 2:8",
+    "text": "“See to it that no one takes you captive by philosophy and empty deceit, according to human tradition, according to the elemental spirits of the world, and not according to Christ.”"
+  },
+  "1_cor_1_21": {
+    "ref": "1 Corinthians 1:21",
+    "text": "“For since, in the wisdom of God, the world did not know God through wisdom, it pleased God through the folly of what we preach to save those who believe.”"
+  },
+  "rom_1_21": {
+    "ref": "Romans 1:21",
+    "text": "“For although they knew God, they did not honor him as God or give thanks to him, but they became futile in their thinking, and their foolish hearts were darkened.”"
+  },
+  "prov_3_19": {
+    "ref": "Proverbs 3:19",
+    "text": "“The Lord by wisdom founded the earth; by understanding he established the heavens.”"
+  },
+  "rom_11_33": {
+    "ref": "Romans 11:33",
+    "text": "“Oh, the depth of the riches and wisdom and knowledge of God! How unsearchable are his judgments and how inscrutable his ways!”"
+  },
+  "1_cor_2_10": {
+    "ref": "1 Corinthians 2:10",
+    "text": "“...these things God has revealed to us through the Spirit. For the Spirit searches everything, even the depths of God.”"
+  },
+  "eph_3_10": {
+    "ref": "Ephesians 3:10",
+    "text": "“...so that through the church the manifold wisdom of God might now be made known to the rulers and authorities in the heavenly places.”"
+  },
+  "col_2_3": {
+    "ref": "Colossians 2:3",
+    "text": "“...in whom are hidden all the treasures of wisdom and knowledge.”"
+  },
+  "prov_8_11": {
+    "ref": "Proverbs 8:11",
+    "text": "“...for wisdom is better than jewels, and all that you may desire cannot compare with her.”"
+  },
+  "prov_2_6": {
+    "ref": "Proverbs 2:6",
+    "text": "“For the Lord gives wisdom; from his mouth come knowledge and understanding.”"
+  },
+  "1_sam_2_3": {
+    "ref": "1 Samuel 2:3",
+    "text": "“Talk no more so very proudly, let not arrogance come from your mouth; for the Lord is a God of knowledge, and by him actions are weighed.”"
+  },
+  "prov_1_7": {
+    "ref": "Proverbs 1:7",
+    "text": "“The fear of the Lord is the beginning of knowledge; fools despise wisdom and instruction.”"
+  },
+  "1_cor_13_2": {
+    "ref": "1 Corinthians 13:2",
+    "text": "“And if I have prophetic powers, and understand all mysteries and all knowledge, and if I have all faith, so as to remove mountains, but have not love, I am nothing.”"
+  },
+  "exod_31_3": {
+    "ref": "Exodus 31:3",
+    "text": "“...and I have filled him with the Spirit of God, with ability and intelligence, with knowledge and all craftsmanship...”"
+  },
+  "exod_35_31": {
+    "ref": "Exodus 35:31",
+    "text": "“...and he has filled him with the Spirit of God, with skill, with intelligence, with knowledge, and with all craftsmanship...”"
+  },
+  "isa_57_15": {
+    "ref": "Isaiah 57:15",
+    "text": "“For thus says the One who is high and lifted up, who inhabits eternity, whose name is Holy: ‘I dwell in the high and holy place, and also with him who is of a contrite and lowly spirit, to revive the spirit of the lowly, and to revive the heart of the contrite.’”"
+  },
+  "acts_17_27": {
+    "ref": "Acts 17:27",
+    "text": "“...that they should seek God, and perhaps feel their way toward him and find him. Yet he is actually not far from each one of us...”"
+  },
+  "isa_29_8": {
+    "ref": "Isaiah 29:8",
+    "text": "“As when a hungry man dreams, and behold, he is eating, and awakes with his hunger not satisfied, or as when a thirsty man dreams, and behold, he is drinking, and awakes faint, with his thirst not quenched...”"
+  }
+};
+END OF OLD VERSE TEXTS */
+const CHAPTERS = [
+  {
+    "id": "foreword",
+    "label": "Section 1 · Foreword",
+    "title": "Magnalia Dei: The Great Works of God",
+    "subtitle": "Author's Foreword (Amsterdam, May 1907)",
+    "paragraphs": [
+      {
+        "raw": "In this modest volume, I seek to provide a clear exposition of the Christian faith as professed by Reformed Churches across all lands and ages.",
+        "html": "In this modest volume, I seek to provide a clear exposition of the Christian faith as professed by Reformed Churches across all lands and ages."
+      },
+      {
+        "raw": "The title, Magnalia Dei, is drawn from Acts 2:11. There, we are told that the disciples of Jesus, upon receiving the Holy Spirit, began to proclaim the great works of God in languages understood by all.",
+        "html": "The title, <em>“Magnalia Dei,”</em> is drawn from <span class='scripture-ref' onclick=\"openScripture(event, 'acts_2_11')\">Acts 2:11</span>. There, we are told that the disciples of Jesus, upon receiving the Holy Spirit, began to proclaim the great works of God in languages understood by all."
+      },
+      {
+        "raw": "These great works of God do not refer solely to specific events, such as the resurrection of Christ, but rather encompass the entirety of the salvation history wrought by God through Christ. The Holy Spirit was poured out so that the congregation might come to know, glorify, and offer thanks and praise to God for these works.",
+        "html": "These great works of God do not refer solely to specific events, such as the resurrection of Christ, but rather encompass the entirety of the salvation history wrought by God through Christ. The Holy Spirit was poured out so that the congregation might come to know, glorify, and offer thanks and praise to God for these works."
+      },
+      {
+        "raw": "This conveys the idea that the Christian religion is not merely a collection of words or doctrines, but is in essence a divine work, achieved in the past, unfolding in the present, and destined for completion in the future. The substance of the Christian faith is neither a scientific theory nor a philosophical formula explaining the world, but rather an acknowledgment and confession of the great works of God, which span the ages, encompass the entire world, and will find fulfillment in the new heavens and the new earth where righteousness dwells.",
+        "html": "This conveys the idea that the Christian religion is not merely a collection of words or doctrines, but is in essence a divine work, achieved in the past, unfolding in the present, and destined for completion in the future. The substance of the Christian faith is neither a scientific theory nor a philosophical formula explaining the world, but rather an acknowledgment and confession of the great works of God, which span the ages, encompass the entire world, and will find fulfillment in the <span class='scripture-ref' onclick=\"openScripture(event, '2_pet_3_13')\">new heavens and the new earth where righteousness dwells (2 Pet. 3:13)</span>."
+      },
+      {
+        "raw": "Such understanding is no longer widely grasped or appreciated. The knowledge of the truth, which accords with godliness, is steadily declining. Interest in the mysteries of the kingdom of God diminishes daily, not only outside but also within Christian circles.",
+        "html": "Such understanding is no longer widely grasped or appreciated. The <span class='scripture-ref' onclick=\"openScripture(event, 'titus_1_1')\">knowledge of the truth, which accords with godliness (Titus 1:1)</span>, is steadily declining. Interest in the mysteries of the kingdom of God diminishes daily, not only outside but also within Christian circles."
+      },
+      {
+        "raw": "Fewer and fewer live by the truth with their whole heart and soul, nourishing themselves with it daily. Those who still accept it often see it merely as a set of teachings, perhaps worthy of belief, but disconnected from life and irrelevant to the present.",
+        "html": "Fewer and fewer live by the truth with their whole heart and soul, nourishing themselves with it daily. Those who still accept it often see it merely as a set of teachings, perhaps worthy of belief, but disconnected from life and irrelevant to the present."
+      },
+      {
+        "raw": "Several reasons account for this lamentable state of affairs.",
+        "html": "Several reasons account for this lamentable state of affairs."
+      },
+      {
+        "raw": "The demands placed on those preparing for or engaged in various professions are so heavy that there is neither pleasure nor time left for other pursuits. Life has become so rich and complex that obtaining an overview requires great effort. Political, social, and philanthropic interests increasingly claim our time and strength. The reading of daily and weekly newspapers, magazines, and brochures consumes our free moments. There is neither the desire nor the opportunity to study the Scriptures or the old theological works.",
+        "html": "The demands placed on those preparing for or engaged in various professions are so heavy that there is neither pleasure nor time left for other pursuits. Life has become so rich and complex that obtaining an overview requires great effort. Political, social, and philanthropic interests increasingly claim our time and strength. The reading of daily and weekly newspapers, magazines, and brochures consumes our free moments. There is neither the desire nor the opportunity to study the Scriptures or the old theological works."
+      },
+      {
+        "raw": "Moreover, those old works are no longer in tune with our times.",
+        "html": "Moreover, those old works are no longer in tune with our times."
+      },
+      {
+        "raw": "Differences in language, style, thought, and expression make them feel foreign to us. Issues once deemed paramount have lost much, if not all, of their significance. New interests, not addressed by these works, now dominate our attention. Enemies they once fought no longer exist, have been replaced, or engage us in entirely different ways.",
+        "html": "Differences in language, style, thought, and expression make them feel foreign to us. Issues once deemed paramount have lost much, if not all, of their significance. New interests, not addressed by these works, now dominate our attention. Enemies they once fought no longer exist, have been replaced, or engage us in entirely different ways."
+      },
+      {
+        "raw": "We are children of a new era, living in a different century. Clinging to old forms merely because they are old is futile and contradicts our own confession. Precisely because the Christian faith is the recognition of a divine work spanning from the beginning of time to our present day, its essence is timeless, but its form must be contemporary. No matter the good that works like Frank's Kern, Marck's Merg, and Brakel's Redeemer's Religion did in their time, they cannot be revived today. They no longer resonate with the younger generation and inadvertently suggest that Christianity is outdated. Hence, there is a pressing need for a work that can stand in place of the fathers' writings, presenting the old truth in a form that meets contemporary demands.",
+        "html": "We are children of a new era, living in a different century. Clinging to old forms merely because they are old is futile and contradicts our own confession. Precisely because the Christian faith is the recognition of a divine work spanning from the beginning of time to our present day, its essence is timeless, but its form must be contemporary. No matter the good that works like Frank's <em>“Kern,”</em> Marck's <em>“Merg,”</em> and Brakel's <em>“Redeemer's Religion”</em> did in their time, they cannot be revived today. They no longer resonate with the younger generation and inadvertently suggest that Christianity is outdated. Hence, there is a pressing need for a work that can stand in place of the fathers' writings, presenting the old truth in a form that meets contemporary demands."
+      },
+      {
+        "raw": "Much progress has been made in this direction. Since the Reformed faith and theology saw revival and growth in the last century, numerous attempts have been made to adapt the old confession to modern understanding. The contributions of Dr. Kuyper, especially through his rich catechetical expositions, cannot be overstated. Yet, there remains a lack of a work that explains the Christian faith's content in an accessible manner for the broader populace, kept within reach by its modest size and price.",
+        "html": "Much progress has been made in this direction. Since the Reformed faith and theology saw revival and growth in the last century, numerous attempts have been made to adapt the old confession to modern understanding. The contributions of Dr. Kuyper, especially through his rich catechetical expositions, cannot be overstated. Yet, there remains a lack of a work that explains the Christian faith's content in an accessible manner for the broader populace, kept within reach by its modest size and price."
+      },
+      {
+        "raw": "This book aims to fill that gap, offering instruction in the Christian religion to the congregation. While the author of this handbook on Reformed doctrine is aware of his limitations, this awareness should not lead to despair and inactivity but should instead drive one to exert all effort and rely on the help of Him who perfects His strength in our weakness.",
+        "html": "This book aims to fill that gap, offering instruction in the Christian religion to the congregation. While the author of this handbook on Reformed doctrine is aware of his limitations, this awareness should not lead to despair and inactivity but should instead drive one to exert all effort and rely on the help of <span class='scripture-ref' onclick=\"openScripture(event, '2_cor_12_9')\">Him who perfects His strength in our weakness (2 Cor. 12:9)</span>."
+      },
+      {
+        "raw": "I do not envisage scholars as the primary readers of this work, those well-versed in the rich and profound thoughts of Scripture as formulated in Reformed theology. Instead, I have in mind ordinary church members, those preparing through catechism for admission to Holy Communion, or those maintaining an interest in the truth's knowledge. I particularly consider the young men and women, often already training for their future professions in workplaces, factories, stores, offices, higher education institutions, or grammar schools, where they frequently encounter objections to the Christian faith.",
+        "html": "I do not envisage scholars as the primary readers of this work, those well-versed in the rich and profound thoughts of Scripture as formulated in Reformed theology. Instead, I have in mind ordinary church members, those preparing through catechism for admission to Holy Communion, or those maintaining an interest in the truth's knowledge. I particularly consider the young men and women, often already training for their future professions in workplaces, factories, stores, offices, higher education institutions, or grammar schools, where they frequently encounter objections to the Christian faith."
+      },
+      {
+        "raw": "Many among them still desire to believe but find it exceedingly difficult due to their environment and the objections they hear. Their confession often lacks joy and enthusiasm. Yet, if the truth is rightly understood, joy and enthusiasm will return. When the works of God are seen in their true light, they naturally inspire admiration and worship. We then perceive that the Christian faith not only deserves belief but also possesses an intrinsic beauty, grounded in its inner truth and glory, appealing to the conscience. We then thank God, not because we must, but because we may believe. We come to realize the relevance of our faith to our thoughts and lives. Each in our own language, we begin anew to proclaim the great works of God. H. Bavinck. Amsterdam, May 1907.",
+        "html": "Many among them still desire to believe but find it exceedingly difficult due to their environment and the objections they hear. Their confession often lacks joy and enthusiasm. Yet, if the truth is rightly understood, joy and enthusiasm will return. When the works of God are seen in their true light, they naturally inspire admiration and worship. We then perceive that the Christian faith not only deserves belief but also possesses an intrinsic beauty, grounded in its inner truth and glory, appealing to the conscience. We then thank God, not because we must, but because we may believe. We come to realize the relevance of our faith to our thoughts and lives. Each in our own language, we begin anew to proclaim the great works of God.<br><br><em>— H. Bavinck, Amsterdam, May 1907</em>"
+      }
+    ]
+  },
+  {
+    "id": "preface",
+    "label": "Section 2 · Preface",
+    "title": "Preface",
+    "subtitle": "Overview & Purpose of Magnalia Dei",
+    "paragraphs": [
+      {
+        "raw": "Magnalia Dei by Herman Bavinck is a profound exploration of the manifold works of God as revealed in Scripture and experienced in the lives of believers. This book aims to bridge the rich theological heritage of Reformed thought with the practical, lived experience of faith. Rooted in the biblical testimony and illuminated by the insights of Reformed theology, Bavinck's work invites readers to deeply explore the knowledge of God, the nature of His creation, the reality of sin and grace, and the ultimate hope of eternal life.",
+        "html": "<em>Magnalia Dei</em> by Herman Bavinck is a profound exploration of the manifold works of God as revealed in Scripture and experienced in the lives of believers. This book aims to bridge the rich theological heritage of Reformed thought with the practical, lived experience of faith. Rooted in the biblical testimony and illuminated by the insights of Reformed theology, Bavinck's work invites readers to deeply explore the knowledge of God, the nature of His creation, the reality of sin and grace, and the ultimate hope of eternal life."
+      },
+      {
+        "raw": "Throughout the chapters of this book, Bavinck carefully examines the intricate tapestry of God's interaction with humanity, from the creation narrative to the promise of the New Jerusalem. He explores fundamental doctrines such as the nature of God, the person and work of Christ, the role of the Holy Spirit, and the significance of the Church. Each doctrine is presented not merely as an abstract concept but as a lived reality, deeply relevant to the believer's journey of faith.",
+        "html": "Throughout the chapters of this book, Bavinck carefully examines the intricate tapestry of God's interaction with humanity, from the creation narrative to the promise of the New Jerusalem. He explores fundamental doctrines such as the nature of God, the person and work of Christ, the role of the Holy Spirit, and the significance of the Church. Each doctrine is presented not merely as an abstract concept but as a lived reality, deeply relevant to the believer's journey of faith."
+      },
+      {
+        "raw": "Key themes such as the highest good, the divine and human nature of Christ, the work of the Holy Spirit, and the eternal calling of God are meticulously unpacked. Bavinck shows how these doctrines are interwoven with the everyday life of believers, providing a comprehensive understanding of what it means to live in the presence of God. His treatment of these topics is both scholarly and pastoral, making profound theological truths accessible and applicable to all readers.",
+        "html": "Key themes such as the highest good, the divine and human nature of Christ, the work of the Holy Spirit, and the eternal calling of God are meticulously unpacked. Bavinck shows how these doctrines are interwoven with the everyday life of believers, providing a comprehensive understanding of what it means to live in the presence of God. His treatment of these topics is both scholarly and pastoral, making profound theological truths accessible and applicable to all readers."
+      },
+      {
+        "raw": "To facilitate deeper engagement with the material, study questions for reflection have been added to the end of each chapter. These questions are designed to help readers not only grasp the theological content but also to reflect on its significance in their own lives. They encourage personal contemplation and group discussion, fostering a richer and more transformative reading experience.",
+        "html": "To facilitate deeper engagement with the material, study questions for reflection have been added to the end of each chapter. These questions are designed to help readers not only grasp the theological content but also to reflect on its significance in their own lives. They encourage personal contemplation and group discussion, fostering a richer and more transformative reading experience."
+      },
+      {
+        "raw": "As you embark on this journey through Magnalia Dei, may you be inspired and challenged to grow in your knowledge of God, deepen your love for Him, and live more fully in the light of His truth. Herman Bavinck's thoughtful exposition and the added study questions are meant to guide you towards a fuller understanding and appreciation of the wondrous works of God. Soli Deo Gloria — To God Alone Be the Glory.",
+        "html": "As you embark on this journey through <em>Magnalia Dei</em>, may you be inspired and challenged to grow in your knowledge of God, deepen your love for Him, and live more fully in the light of His truth. Herman Bavinck's thoughtful exposition and the added study questions are meant to guide you towards a fuller understanding and appreciation of the wondrous works of God.<br><br><strong>Soli Deo Gloria — To God Alone Be the Glory.</strong>"
+      }
+    ]
+  },
+  {
+    "id": "chapter1",
+    "label": "Chapter 1",
+    "title": "1. The Highest Good",
+    "subtitle": "Man's Supreme Good Is God Alone",
+    "paragraphs": [
+      {
+        "raw": "Man's supreme good is God alone. In a broad sense, we acknowledge that God is the ultimate good for all creation, being the Creator and Sustainer of all things, the source from which all life and goodness flow. Every creature owes its existence to Him, the one eternal and omnipresent Being.",
+        "html": "<strong>Man's supreme good is God alone.</strong> In a broad sense, we acknowledge that God is the ultimate good for all creation, being the Creator and Sustainer of all things, the source from which all life and goodness flow. Every creature owes its existence to Him, the one eternal and omnipresent Being."
+      },
+      {
+        "raw": "Yet, when we speak of the highest good, we imply that it is recognized and enjoyed as such by the creatures. This recognition is not found among lifeless or senseless beings. Some creatures exist without participating in life, like inanimate objects; others, like plants, have life but lack perception; still others, like animals, possess consciousness but are limited to the material and sensory world. They understand earthly realities, the pleasant and the useful, but remain ignorant of the true, the good, and the beautiful; their desires are sensual, not spiritual.",
+        "html": "Yet, when we speak of the highest good, we imply that it is recognized and enjoyed as such by the creatures. This recognition is not found among lifeless or senseless beings. Some creatures exist without participating in life, like inanimate objects; others, like plants, have life but lack perception; still others, like animals, possess consciousness but are limited to the material and sensory world. They understand earthly realities, the pleasant and the useful, but remain ignorant of the true, the good, and the beautiful; their desires are sensual, not spiritual."
+      },
+      {
+        "raw": "Humankind stands apart. Created in the image and likeness of God, man retains a divine origin and kinship that cannot be erased. Even though sin has marred the image of God within us, remnants of His gifts remain, sufficient to remind us of our lost innocence and to testify to our former greatness and divine calling.",
+        "html": "Humankind stands apart. Created in the image and likeness of God, man retains a divine origin and kinship that cannot be erased. Even though sin has marred the image of God within us, remnants of His gifts remain, sufficient to remind us of our lost innocence and to testify to our former greatness and divine calling."
+      },
+      {
+        "raw": "In all human endeavors, a restless striving reveals that we are not content with the earthly realm; our desires reach beyond this world. While we are citizens of the temporal order, our hearts are drawn to the eternal. With feet on earth, our gaze lifts to heaven. We comprehend both the visible and the eternal, the perishable and the imperishable. Our longing encompasses earthly goods but also yearns for heavenly treasures.",
+        "html": "In all human endeavors, a restless striving reveals that we are not content with the earthly realm; our desires reach beyond this world. While we are citizens of the temporal order, our hearts are drawn to the eternal. With feet on earth, our gaze lifts to heaven. We comprehend both the visible and the eternal, the perishable and the imperishable. Our longing encompasses earthly goods but also yearns for heavenly treasures."
+      },
+      {
+        "raw": "Humans share sensory perception with animals but are endowed with reason and intellect, enabling us to transcend sensory experiences and contemplate immaterial truths. Our intellect, though connected to the brain, is inherently spiritual, allowing us to engage with a reality unseen and untouched, yet more substantial than the physical world. This pursuit of spiritual truth, one that is eternal and immutable, is where our mind finds true rest. Thus, man's quest is not for tangible reality, but for divine truth, which alone can satisfy our deepest longings. This truth is singular, eternal, and imperishable, and in it, our minds find peace.",
+        "html": "Humans share sensory perception with animals but are endowed with reason and intellect, enabling us to transcend sensory experiences and contemplate immaterial truths. Our intellect, though connected to the brain, is inherently spiritual, allowing us to engage with a reality unseen and untouched, yet more substantial than the physical world. This pursuit of spiritual truth, one that is eternal and immutable, is where our mind finds true rest. Thus, man's quest is not for tangible reality, but for divine truth, which alone can satisfy our deepest longings. This truth is singular, eternal, and imperishable, and in it, our minds find peace."
+      },
+      {
+        "raw": "Likewise, mankind shares with animals a sensual desire. He requires food and drink, light and air, labor and repose, relying on the earth for his physical sustenance. Yet above this sensual desire, he possesses a will that, guided by reason and conscience, aspires to higher and nobler goods. Pleasant and useful things, though valuable in their proper place and time, do not satisfy him; he seeks a good that is inherently good, unchanging, spiritual, and eternal. His will finds rest only in the supreme, absolute goodness of God.",
+        "html": "Likewise, mankind shares with animals a sensual desire. He requires food and drink, light and air, labor and repose, relying on the earth for his physical sustenance. Yet above this sensual desire, he possesses a will that, guided by reason and conscience, aspires to higher and nobler goods. Pleasant and useful things, though valuable in their proper place and time, do not satisfy him; he seeks a good that is inherently good, unchanging, spiritual, and eternal. His will finds rest only in the supreme, absolute goodness of God."
+      },
+      {
+        "raw": "Both mind and will are deeply rooted in the heart of man, as interpreted by Holy Scripture. Proverbs declares that the heart must be guarded above all else, for out of it flow the issues of life (Proverbs 4:23). Just as the heart is, in a natural sense, the fountainhead and driving force of the circulatory system and thus the principal organ of physical life, so it is spiritually and morally the source of higher life in man. It is the seat of our self-awareness, our relationship to God, our subjection to His law, and our entire spiritual and moral nature. Consequently, our rational and volitional life originates from and is directed by the heart.",
+        "html": "Both mind and will are deeply rooted in the heart of man, as interpreted by Holy Scripture. Proverbs declares that the heart must be guarded above all else, for out of it flow the issues of life (<span class='scripture-ref' onclick=\"openScripture(event, 'prov_4_23')\">Proverbs 4:23</span>). Just as the heart is, in a natural sense, the fountainhead and driving force of the circulatory system and thus the principal organ of physical life, so it is spiritually and morally the source of higher life in man. It is the seat of our self-awareness, our relationship to God, our subjection to His law, and our entire spiritual and moral nature. Consequently, our rational and volitional life originates from and is directed by the heart."
+      },
+      {
+        "raw": "In that heart, God has placed eternity, as Ecclesiastes 3:11 states. God ordains everything in its time, ensuring that history, in its entirety and in every detail, aligns with His counsel and manifests the glory of His decrees. God has situated man within the temporal order and instilled eternity in his heart, so that he might not remain engrossed in the external, visible phenomena, but might discern and comprehend God's eternal purposes in the transient course of nature and history.",
+        "html": "In that heart, God has placed eternity, as <span class='scripture-ref' onclick=\"openScripture(event, 'eccl_3_11')\">Ecclesiastes 3:11</span> states. God ordains everything in its time, ensuring that history, in its entirety and in every detail, aligns with His counsel and manifests the glory of His decrees. God has situated man within the temporal order and instilled eternity in his heart, so that he might not remain engrossed in the external, visible phenomena, but might discern and comprehend God's eternal purposes in the transient course of nature and history."
+      },
+      {
+        "raw": "This desiderium aeternitatis, this longing for eternity that God has implanted in man's heart, in the innermost part of his being, the core of his personality, causes him to be dissatisfied with anything temporal. Though he is a sensible, earthly, finite being, he is also prepared and destined for eternity. It profits a man nothing to gain wife and children, houses and fields, treasures and goods, even the whole world, if his soul suffers damage (Matthew 16:26). For the entire world holds no value for a man. No wealthy man can offer God a ransom for his brother to save him from death; the price of a soul is beyond the capacity of any creature (Psalm 49:8-9).",
+        "html": "This <em>“desiderium aeternitatis,”</em> this longing for eternity that God has implanted in man's heart, in the innermost part of his being, the core of his personality, causes him to be dissatisfied with anything temporal. Though he is a sensible, earthly, finite being, he is also prepared and destined for eternity. It profits a man nothing to gain wife and children, houses and fields, treasures and goods, even the whole world, if his soul suffers damage (<span class='scripture-ref' onclick=\"openScripture(event, 'matt_16_26')\">Matthew 16:26</span>). For the entire world holds no value for a man. No wealthy man can offer God a ransom for his brother to save him from death; the price of a soul is beyond the capacity of any creature (<span class='scripture-ref' onclick=\"openScripture(event, 'ps_49_8_9')\">Psalm 49:8–9</span>)."
+      },
+      {
+        "raw": "Many may agree with this sentiment when it concerns sensual pleasures and earthly treasures. They fully acknowledge that such things are incapable of satisfying mankind and do not align with his lofty destiny. Yet, their judgment shifts when considering so-called ideal goods: science, art, civilization, the service of the true, the good, and the beautiful, a life dedicated to others, and the pursuit of humanity. These, too, belong to the world, which Scripture declares will pass away with all its desires (1 John 2:17).",
+        "html": "Many may agree with this sentiment when it concerns sensual pleasures and earthly treasures. They fully acknowledge that such things are incapable of satisfying mankind and do not align with his lofty destiny. Yet, their judgment shifts when considering so-called ideal goods: science, art, civilization, the service of the true, the good, and the beautiful, a life dedicated to others, and the pursuit of humanity. These, too, belong to the world, which Scripture declares will pass away with all its desires (<span class='scripture-ref' onclick=\"openScripture(event, '1_john_2_17')\">1 John 2:17</span>)."
+      },
+      {
+        "raw": "Science, indeed, is a noble gift, descending from the Father of lights, and as such, it is to be esteemed highly. When Paul refers to the wisdom of this world as foolishness before God (1 Corinthians 3:19; 2:18) and elsewhere warns against philosophy (Colossians 2:8), he speaks of that false, imaginary wisdom which does not recognize God's wisdom as revealed in His general and special revelation (1 Corinthians 1:21) and is frustrated in all its deliberations (Romans 1:21). However, throughout Paul's writings and all of Scripture, knowledge and wisdom are held in the highest regard. This is consistent with the Scripture's assumption that God alone is wise, fully knowing Himself and all things, having founded the world through wisdom, revealing His manifold wisdom in the church, securing all treasures of wisdom and knowledge in Christ, and being the Spirit of wisdom and knowledge who searches the depths of God (Proverbs 3:19; Romans 11:33; 1 Corinthians 2:10; Ephesians 3:10; Colossians 2:3). A book derived from such thoughts cannot slight knowledge nor despise science. On the contrary, wisdom is more precious than rubies, and nothing one desires can compare with it (Proverbs 8:11); it is a gift from Him who is the God of knowledge (Proverbs 2:6; 1 Samuel 2:3).",
+        "html": "Science, indeed, is a noble gift, descending from the Father of lights, and as such, it is to be esteemed highly. When Paul refers to the wisdom of this world as foolishness before God (<span class='scripture-ref' onclick=\"openScripture(event, '1_cor_3_19')\">1 Corinthians 3:19</span>; <span class='scripture-ref' onclick=\"openScripture(event, '1_cor_2_18')\">2:18</span>) and elsewhere warns against philosophy (<span class='scripture-ref' onclick=\"openScripture(event, 'col_2_8')\">Colossians 2:8</span>), he speaks of that false, imaginary wisdom which does not recognize God's wisdom as revealed in His general and special revelation (<span class='scripture-ref' onclick=\"openScripture(event, '1_cor_1_21')\">1 Corinthians 1:21</span>) and is frustrated in all its deliberations (<span class='scripture-ref' onclick=\"openScripture(event, 'rom_1_21')\">Romans 1:21</span>). However, throughout Paul's writings and all of Scripture, knowledge and wisdom are held in the highest regard. This is consistent with the Scripture's assumption that God alone is wise, fully knowing Himself and all things, having founded the world through wisdom, revealing His manifold wisdom in the church, securing all treasures of wisdom and knowledge in Christ, and being the Spirit of wisdom and knowledge who searches the depths of God (<span class='scripture-ref' onclick=\"openScripture(event, 'prov_3_19')\">Proverbs 3:19</span>; <span class='scripture-ref' onclick=\"openScripture(event, 'rom_11_33')\">Romans 11:33</span>; <span class='scripture-ref' onclick=\"openScripture(event, '1_cor_2_10')\">1 Corinthians 2:10</span>; <span class='scripture-ref' onclick=\"openScripture(event, 'eph_3_10')\">Ephesians 3:10</span>; <span class='scripture-ref' onclick=\"openScripture(event, 'col_2_3')\">Colossians 2:3</span>). A book derived from such thoughts cannot slight knowledge nor despise science. On the contrary, wisdom is more precious than rubies, and nothing one desires can compare with it (<span class='scripture-ref' onclick=\"openScripture(event, 'prov_8_11')\">Proverbs 8:11</span>); it is a gift from Him who is the God of knowledge (<span class='scripture-ref' onclick=\"openScripture(event, 'prov_2_6')\">Proverbs 2:6</span>; <span class='scripture-ref' onclick=\"openScripture(event, '1_sam_2_3')\">1 Samuel 2:3</span>)."
+      },
+      {
+        "raw": "However, Scripture demands a science that begins with the fear of the Lord as its principle (Proverbs 1:7). Without this foundation, it may still bear the name of science, but it degenerates into worldly wisdom, which is foolishness in God's sight. A science that believes it can suffice on its own, apart from God, becomes its own antithesis and disappoints those who place their hopes upon it.",
+        "html": "However, Scripture demands a science that begins with the fear of the Lord as its principle (<span class='scripture-ref' onclick=\"openScripture(event, 'prov_1_7')\">Proverbs 1:7</span>). Without this foundation, it may still bear the name of science, but it degenerates into worldly wisdom, which is foolishness in God's sight. A science that believes it can suffice on its own, apart from God, becomes its own antithesis and disappoints those who place their hopes upon it."
+      },
+      {
+        "raw": "This is easily understood. Firstly, science always has a specialized nature and can only be pursued by a select few; these individuals, who can devote their entire lives to its pursuit, only conquer a small part of its territory and remain strangers and exiles in the broader context; whatever satisfaction it may provide, it can never satisfy those profound, universal needs innate to human nature and present in every person.",
+        "html": "This is easily understood. Firstly, science always has a specialized nature and can only be pursued by a select few; these individuals, who can devote their entire lives to its pursuit, only conquer a small part of its territory and remain strangers and exiles in the broader context; whatever satisfaction it may provide, it can never satisfy those profound, universal needs innate to human nature and present in every person."
+      },
+      {
+        "raw": "Secondly, whenever science experiences a revival after a period of decline, it begins with extraordinary, exaggerated expectations; it thrives on the hope that persistent research will unravel the mysteries of the world and life. But just as surely, disappointment follows this initial exuberance; as research continues, problems do not diminish but increase; what seemed self-evident reveals itself as a new enigma, and the end of all science is often the sorrowful, sometimes even desperate confession that man walks the earth amidst riddles, and that life and destiny remain mysteries.",
+        "html": "Secondly, whenever science experiences a revival after a period of decline, it begins with extraordinary, exaggerated expectations; it thrives on the hope that persistent research will unravel the mysteries of the world and life. But just as surely, disappointment follows this initial exuberance; as research continues, problems do not diminish but increase; what seemed self-evident reveals itself as a new enigma, and the end of all science is often the sorrowful, sometimes even desperate confession that man walks the earth amidst riddles, and that life and destiny remain mysteries."
+      },
+      {
+        "raw": "Thirdly, let us consider that even if science could attain more certainty than it currently does, it would still leave the heart of man unsatisfied. For knowledge devoid of virtue and a moral foundation becomes an instrument of sin, employed for the contemplation and execution of more refined evils. The mind filled with science thus serves the corruption of the heart. Therefore, the Apostle Paul declares, even if one possesses the gift of prophecy and understands all mysteries and all knowledge, but lacks love, such a one is nothing (1 Corinthians 13:2).",
+        "html": "Thirdly, let us consider that even if science could attain more certainty than it currently does, it would still leave the heart of man unsatisfied. For knowledge devoid of virtue and a moral foundation becomes an instrument of sin, employed for the contemplation and execution of more refined evils. The mind filled with science thus serves the corruption of the heart. Therefore, the Apostle Paul declares, even if one possesses the gift of prophecy and understands all mysteries and all knowledge, but lacks love, such a one is nothing (<span class='scripture-ref' onclick=\"openScripture(event, '1_cor_13_2')\">1 Corinthians 13:2</span>)."
+      },
+      {
+        "raw": "Similarly, art, too, is a gift from God. Just as the Lord is not only truth and holiness but also glory, extending His glory over all His works, so He bestows wisdom, understanding, and knowledge upon artists through His Spirit (Exodus 31:3; 35:31). Art, therefore, serves as a testament to man's spiritual capacity, revealing his deepest desires, lofty ideals, and thirst for harmony. Through its creations, art presents an ideal world where the discord of earthly existence is resolved into harmony, unveiling a beauty often hidden from the perceptive but revealed to the discerning eye of the artist. This portrayal of a higher reality comforts us, lifts our spirits, and fills our hearts with hope and joy.",
+        "html": "Similarly, art, too, is a gift from God. Just as the Lord is not only truth and holiness but also glory, extending His glory over all His works, so He bestows wisdom, understanding, and knowledge upon artists through His Spirit (<span class='scripture-ref' onclick=\"openScripture(event, 'exod_31_3')\">Exodus 31:3</span>; <span class='scripture-ref' onclick=\"openScripture(event, 'exod_35_31')\">35:31</span>). Art, therefore, serves as a testament to man's spiritual capacity, revealing his deepest desires, lofty ideals, and thirst for harmony. Through its creations, art presents an ideal world where the discord of earthly existence is resolved into harmony, unveiling a beauty often hidden from the perceptive but revealed to the discerning eye of the artist. This portrayal of a higher reality comforts us, lifts our spirits, and fills our hearts with hope and joy."
+      },
+      {
+        "raw": "Yet, art, despite its allure, can only offer enjoyment through its depictions of beauty; it cannot bridge the gap between the ideal and the real. It shows us the glory of the Promised Land from afar but does not grant us entry or citizenship. Art is many things, but it is not everything. It is not, despite what some may claim, the ultimate religion or salvation of mankind. It does not atone for our guilt, cleanse us from our wickedness, nor can it dry our tears in times of sorrow.",
+        "html": "Yet, art, despite its allure, can only offer enjoyment through its depictions of beauty; it cannot bridge the gap between the ideal and the real. It shows us the glory of the Promised Land from afar but does not grant us entry or citizenship. Art is many things, but it is not everything. It is not, despite what some may claim, the ultimate religion or salvation of mankind. It does not atone for our guilt, cleanse us from our wickedness, nor can it dry our tears in times of sorrow."
+      },
+      {
+        "raw": "Lastly, the pursuit of humanity, civilization, and communal life cannot be considered the highest good for mankind. While we can acknowledge progress in humanitarian efforts and the development of philanthropy—evidenced by improved care for the poor, the sick, the needy, widows, orphans, the insane, and prisoners compared to previous centuries—there remains much to be wary of. Contemporary society is still plagued by dreadful iniquities such as prostitution, alcoholism, and other abominations, leaving us uncertain whether we are advancing or regressing, oscillating between optimism and pessimism.",
+        "html": "Lastly, the pursuit of humanity, civilization, and communal life cannot be considered the highest good for mankind. While we can acknowledge progress in humanitarian efforts and the development of philanthropy—evidenced by improved care for the poor, the sick, the needy, widows, orphans, the insane, and prisoners compared to previous centuries—there remains much to be wary of. Contemporary society is still plagued by dreadful iniquities such as prostitution, alcoholism, and other abominations, leaving us uncertain whether we are advancing or regressing, oscillating between optimism and pessimism."
+      },
+      {
+        "raw": "Regardless, if life for the community and love for one's neighbor are not grounded in the commandment of God, they will lack substance and stability. Love for one's neighbor is not a natural or spontaneous impulse of the human heart. It is a feeling, an act, a commitment that requires immense willpower and constant effort against the overwhelming forces of selfishness and self-interest. Furthermore, this love often finds no encouragement in others, as people are not naturally so lovable that we can love them as ourselves without struggle. Love for one's neighbor can only endure if it is founded upon and commanded by God, and if God instills within us the desire to walk sincerely in accordance with all His commandments.",
+        "html": "Regardless, if life for the community and love for one's neighbor are not grounded in the commandment of God, they will lack substance and stability. Love for one's neighbor is not a natural or spontaneous impulse of the human heart. It is a feeling, an act, a commitment that requires immense willpower and constant effort against the overwhelming forces of selfishness and self-interest. Furthermore, this love often finds no encouragement in others, as people are not naturally so lovable that we can love them as ourselves without struggle. Love for one's neighbor can only endure if it is founded upon and commanded by God, and if God instills within us the desire to walk sincerely in accordance with all His commandments."
+      },
+      {
+        "raw": "Thus, the words of Augustine remain ever true: the heart of man was created for God and finds no rest until it rests in Him. Augustine further testifies that all people seek God, but they do so incorrectly, not in the right way, nor in the right place. They seek Him below, while He is above. They seek Him on earth, whereas He resides in heaven. They seek Him afar, yet He is near. They seek Him in wealth, goods, glory, power, and lust; yet He dwells on high, in the holy place, with those of a contrite and humble spirit (Isaiah 57:15).",
+        "html": "Thus, the words of Augustine remain ever true: the heart of man was created for God and finds no rest until it rests in Him. Augustine further testifies that all people seek God, but they do so incorrectly, not in the right way, nor in the right place. They seek Him below, while He is above. They seek Him on earth, whereas He resides in heaven. They seek Him afar, yet He is near. They seek Him in wealth, goods, glory, power, and lust; yet He dwells on high, in the holy place, with those of a contrite and humble spirit (<span class='scripture-ref' onclick=\"openScripture(event, 'isa_57_15')\">Isaiah 57:15</span>)."
+      },
+      {
+        "raw": "Despite this misdirection, they still seek Him, hoping to find Him (Acts 17:27). They seek Him even as they flee from Him, unwilling to know His ways, yet unable to live without Him. They feel both drawn to God and repelled by Him.",
+        "html": "Despite this misdirection, they still seek Him, hoping to find Him (<span class='scripture-ref' onclick=\"openScripture(event, 'acts_17_27')\">Acts 17:27</span>). They seek Him even as they flee from Him, unwilling to know His ways, yet unable to live without Him. They feel both drawn to God and repelled by Him."
+      },
+      {
+        "raw": "Herein lies the profound insight of Pascal: the greatness and the misery of mankind. Man thirsts for truth, yet is a liar by nature. He longs for peace but plunges himself into distractions. He hungers for lasting, eternal happiness, yet grasps at fleeting pleasures. He seeks God but loses himself in the creature. Though born to the house, he feeds on swine's husks in a distant land. He is like a hungry man who dreams he eats, but awakens to find his soul empty; or like a thirsty man who dreams he drinks, but upon waking, finds himself parched and his soul unsatisfied (Isaiah 29:8).",
+        "html": "Herein lies the profound insight of Pascal: the greatness and the misery of mankind. Man thirsts for truth, yet is a liar by nature. He longs for peace but plunges himself into distractions. He hungers for lasting, eternal happiness, yet grasps at fleeting pleasures. He seeks God but loses himself in the creature. Though born to the house, he feeds on swine's husks in a distant land. He is like a hungry man who dreams he eats, but awakens to find his soul empty; or like a thirsty man who dreams he drinks, but upon waking, finds himself parched and his soul unsatisfied (<span class='scripture-ref' onclick=\"openScripture(event, 'isa_29_8')\">Isaiah 29:8</span>)."
+      },
+      {
+        "raw": "Science cannot unravel this contradiction within man. It considers only his greatness or his misery, never both in their true light. It either exalts him too highly or casts him down too low, for it knows nothing of his divine origin or his profound fall. But Scripture comprehends both, shedding light upon man and humanity, resolving contradictions, dispelling mists, and uncovering hidden truths. Man is a riddle that only finds its solution in God.",
+        "html": "Science cannot unravel this contradiction within man. It considers only his greatness or his misery, never both in their true light. It either exalts him too highly or casts him down too low, for it knows nothing of his divine origin or his profound fall. But Scripture comprehends both, shedding light upon man and humanity, resolving contradictions, dispelling mists, and uncovering hidden truths. Man is a riddle that only finds its solution in God."
+      },
+      {
+        "raw": "Study Questions for Reflection. Question 1: How does the chapter define the highest good, and why is God alone considered the supreme good for humanity? Question 2: What distinguishes humans from other creatures in their ability to recognize and seek the highest good? Question 3: In what ways does the concept of being created in the image of God influence humanity's longing for something beyond the earthly realm? Question 4: How does the chapter explain the role of intellect and reason in transcending sensory experiences to seek immaterial truths? Question 5: What does the chapter suggest about the limitations of earthly goods and pleasures in satisfying the human heart? Question 6: How does the chapter describe the importance of guarding the heart, as highlighted in Proverbs 4:23? Question 7: What is the meaning of desiderium aeternitatis (longing for eternity) mentioned in the chapter, and how does it affect human behavior? Question 8: How does the pursuit of ideal goods such as science, art, and civilization relate to the highest good, according to the chapter? Question 9: What does the chapter say about the relationship between love for one's neighbor and the commandment of God? Question 10: How does Augustine's insight about the restless human heart finding rest only in God resonate with the overall message of the chapter?",
+        "html": "<div class='study-box'>\n          <h3>Study Questions for Reflection</h3>\n          <ol>\n            <li><strong>How does the chapter define the highest good, and why is God alone considered the supreme good for humanity?</strong><br><span>Reflect on the reasons given for why God, as the Creator and Sustainer, is the ultimate source of all goodness and fulfillment.</span></li>\n            <li><strong>What distinguishes humans from other creatures in their ability to recognize and seek the highest good?</strong><br><span>Consider the unique attributes of humans, such as reason and intellect, that enable them to perceive and desire spiritual truths beyond mere sensory experiences.</span></li>\n            <li><strong>In what ways does the concept of being created in the image of God influence humanity's longing for something beyond the earthly realm?</strong><br><span>Reflect on the implications of being made in God's likeness and how this divine origin shapes human aspirations and desires.</span></li>\n            <li><strong>How does the chapter explain the role of intellect and reason in transcending sensory experiences to seek immaterial truths?</strong><br><span>Discuss the connection between the human mind and its capacity to engage with eternal and immutable truths, as described in the chapter.</span></li>\n            <li><strong>What does the chapter suggest about the limitations of earthly goods and pleasures in satisfying the human heart?</strong><br><span>Reflect on why temporary and material satisfactions fall short of fulfilling the deeper, spiritual longings of humans.</span></li>\n            <li><strong>How does the chapter describe the importance of guarding the heart, as highlighted in <span class='scripture-ref' onclick=\"openScripture(event, 'prov_4_23')\">Proverbs 4:23</span>?</strong><br><span>Consider the metaphor of the heart as the source of life and its significance in guiding one's rational and volitional pursuits towards the highest good.</span></li>\n            <li><strong>What is the meaning of <em>“desiderium aeternitatis”</em> (longing for eternity) mentioned in the chapter, and how does it affect human behavior?</strong><br><span>Reflect on how the innate desire for eternity, placed in the human heart by God, influences one's dissatisfaction with temporal realities.</span></li>\n            <li><strong>How does the pursuit of ideal goods such as science, art, and civilization relate to the highest good, according to the chapter?</strong><br><span>Discuss the value and limitations of these pursuits in light of their transient nature and the ultimate satisfaction found only in God.</span></li>\n            <li><strong>What does the chapter say about the relationship between love for one's neighbor and the commandment of God?</strong><br><span>Reflect on the necessity of divine command and empowerment for genuine love and altruism towards others.</span></li>\n            <li><strong>How does Augustine's insight about the restless human heart finding rest only in God resonate with the overall message of the chapter?</strong><br><span>Consider Augustine's statement and how it encapsulates the chapter's teaching on the human quest for the highest good and the fulfillment found in God alone.</span></li>\n          </ol>\n        </div>"
+      }
+    ]
+  }
+];
+
+let currentChapterIdx = 0;
+let currentParaIdx = 0;
+let isPlaying = false;
+let autoScroll = true;
+let fontSize = 19;
+const themes = ["sepia", "dark", "light"];
+let themeIndex = 0;
+
+function renderChapterTabs() {
+  const bar = document.getElementById("chapterTabs");
+  bar.innerHTML = CHAPTERS.map((ch, idx) => `
+    <button class="chap-pill ${idx === currentChapterIdx ? 'active' : ''}" onclick="switchChapter(${idx})">
+      ${ch.title}
+    </button>
+  `).join("");
+}
+
+function switchChapter(idx, autoPlayNext = false) {
+  if (idx < 0 || idx >= CHAPTERS.length) return;
+  const wasPlaying = isPlaying || autoPlayNext;
+  pauseAudio();
+  currentChapterIdx = idx;
+  currentParaIdx = 0;
+  renderChapter();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (wasPlaying) {
+    playCurrent();
+  }
+}
+
+function renderChapter() {
+  renderChapterTabs();
+  const ch = CHAPTERS[currentChapterIdx];
+  document.getElementById("chapLabel").textContent = ch.label;
+  document.getElementById("chapTitle").textContent = ch.title;
+  document.getElementById("chapSubtitle").textContent = ch.subtitle;
+
+  const container = document.getElementById("readerContent");
+  container.innerHTML = ch.paragraphs.map((p, idx) => `
+    <div class="para ${idx === currentParaIdx ? 'active' : ''}" id="para-${idx}" onclick="selectParagraph(${idx})">
+      ${p.html ?? linkifyScriptureRefs(escapeHtml(p.raw))}
+    </div>
+  `).join("");
+
+  document.getElementById("prevChapBtn").style.visibility = currentChapterIdx > 0 ? "visible" : "hidden";
+  document.getElementById("nextChapBtn").style.visibility = currentChapterIdx < CHAPTERS.length - 1 ? "visible" : "hidden";
+
+  updateProgressUI();
+}
+
+function selectParagraph(idx) {
+  currentParaIdx = idx;
+  highlightActiveParagraph();
+  playCurrent();
+}
+
+function highlightActiveParagraph() {
+  document.querySelectorAll(".para").forEach((el, idx) => {
+    el.classList.toggle("active", idx === currentParaIdx);
+  });
+  updateProgressUI();
+  if (autoScroll) {
+    const activeEl = document.getElementById(`para-${currentParaIdx}`);
+    if (activeEl) {
+      activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+}
+
+function updateProgressUI() {
+  const total = CHAPTERS[currentChapterIdx].paragraphs.length;
+  document.getElementById("paraIndicator").textContent = `Para ${currentParaIdx + 1} / ${total}`;
+  const pct = ((currentParaIdx + 1) / total) * 100;
+  document.getElementById("progressFill").style.width = `${pct}%`;
+}
+
+function playCurrent() {
+  isPlaying = true;
+  document.getElementById("playPauseBtn").textContent = "⏸";
+  document.getElementById("statusText").textContent = "Reading...";
+  highlightActiveParagraph();
+
+  const text = CHAPTERS[currentChapterIdx].paragraphs[currentParaIdx].raw;
+  const utterId = currentUtteranceId();
+
+  if (window.AndroidTTS && window.AndroidTTS.isAvailable()) {
+    window.AndroidTTS.speak(text, utterId);
+  } else if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = parseFloat(document.getElementById("speedSelect").value);
+    utter.onend = () => handleParagraphFinished();
+    window.speechSynthesis.speak(utter);
+  } else {
+    document.getElementById("statusText").textContent = "TTS Ready";
+  }
+}
+
+function handleParagraphFinished() {
+  if (!isPlaying) return;
+  const total = CHAPTERS[currentChapterIdx].paragraphs.length;
+  if (currentParaIdx < total - 1) {
+    currentParaIdx++;
+    playCurrent();
+  } else if (currentChapterIdx < CHAPTERS.length - 1) {
+    // Seamlessly advance to next chapter when finished!
+    switchChapter(currentChapterIdx + 1, true);
+  } else {
+    stopAudio();
+    document.getElementById("statusText").textContent = "Finished";
+  }
+}
+
+window.onNativeSpeechDone = function(utterId) {
+  if (isPlaying && utterId === currentUtteranceId()) {
+    handleParagraphFinished();
+  }
+};
+window.onNativeSpeechStart = function() {
+  document.getElementById("statusText").textContent = "Reading...";
+};
+window.onNativeSpeechError = function() {
+  document.getElementById("statusText").textContent = "Audio Error";
+};
+
+function togglePlay() {
+  if (isPlaying) pauseAudio();
+  else playCurrent();
+}
+
+function pauseAudio() {
+  isPlaying = false;
+  document.getElementById("playPauseBtn").textContent = "▶";
+  document.getElementById("statusText").textContent = "Paused";
+  if (window.AndroidTTS && window.AndroidTTS.isAvailable()) {
+    window.AndroidTTS.stop();
+  } else if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+function stopAudio() {
+  pauseAudio();
+  currentParaIdx = 0;
+  highlightActiveParagraph();
+  document.getElementById("statusText").textContent = "Stopped";
+}
+
+function prevPara() {
+  if (currentParaIdx > 0) {
+    currentParaIdx--;
+    if (isPlaying) playCurrent();
+    else highlightActiveParagraph();
+  }
+}
+
+function nextPara() {
+  const total = CHAPTERS[currentChapterIdx].paragraphs.length;
+  if (currentParaIdx < total - 1) {
+    currentParaIdx++;
+    if (isPlaying) playCurrent();
+    else highlightActiveParagraph();
+  }
+}
+
+function updateRate(val) {
+  const rate = parseFloat(val);
+  if (window.AndroidTTS && window.AndroidTTS.isAvailable()) {
+    window.AndroidTTS.setRate(rate);
+  }
+  if (isPlaying) playCurrent();
+}
+
+function populateVoices() {
+  if (!(window.AndroidTTS && window.AndroidTTS.isAvailable())) return;
+  const select = document.getElementById("voiceSelect");
+  let voices = [];
+  try {
+    voices = JSON.parse(window.AndroidTTS.getVoices());
+  } catch (err) {
+    console.error("Could not load voices:", err);
+  }
+  select.innerHTML = '<option value="">Default voice</option>';
+  voices.forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v.name;
+    opt.textContent = v.label;
+    select.appendChild(opt);
+  });
+  const saved = window.AndroidTTS.getSelectedVoice();
+  select.value = voices.some(v => v.name === saved) ? saved : "";
+}
+
+// Called by the app once the phone's speech engine is ready
+window.onNativeVoicesReady = populateVoices;
+
+function updateVoice(name) {
+  if (window.AndroidTTS && window.AndroidTTS.isAvailable()) {
+    window.AndroidTTS.setVoice(name);
+  }
+  if (isPlaying) playCurrent();
+}
+
+function toggleAutoScroll() {
+  autoScroll = !autoScroll;
+  document.getElementById("autoScrollBtn").textContent = `Scroll: ${autoScroll ? 'ON' : 'OFF'}`;
+}
+
+function seekProgress(e) {
+  const total = CHAPTERS[currentChapterIdx].paragraphs.length;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  currentParaIdx = Math.min(total - 1, Math.floor(ratio * total));
+  if (isPlaying) playCurrent();
+  else highlightActiveParagraph();
+}
+
+function changeFontSize(delta) {
+  fontSize = Math.max(14, Math.min(28, fontSize + delta));
+  document.documentElement.style.setProperty("--font-size", `${fontSize}px`);
+}
+
+function cycleTheme() {
+  themeIndex = (themeIndex + 1) % themes.length;
+  const theme = themes[themeIndex];
+  document.body.setAttribute("data-theme", theme);
+  document.getElementById("themeBtn").textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+}
+
+// Tapped reference in a built-in or imported chapter (key into SCRIPTURES)
+function openScripture(event, key) {
+  event.stopPropagation();
+  const data = SCRIPTURES[key];
+  if (!data) return;
+  if (data.text) {
+    // Imported chapter packs can supply their own verse text
+    showVerseBubble(event, data.ref, document.createTextNode(data.text), "");
+  } else {
+    const passages = parseScriptureRef(data.ref);
+    showVerseBubble(event, data.ref, buildVerseBody(passages), "WEB");
+  }
+}
+
+// Tapped reference that was detected automatically in a downloaded chapter
+function openVerseRef(event, el) {
+  event.stopPropagation();
+  const passages = decodePassages(el.getAttribute("data-ref"));
+  showVerseBubble(event, el.textContent, buildVerseBody(passages), "WEB");
+}
+
+function showVerseBubble(event, title, bodyNode, version) {
+  const bubble = document.getElementById("thoughtBubble");
+  const backdrop = document.getElementById("bubbleBackdrop");
+
+  document.getElementById("bubbleRefTitle").textContent = title;
+  document.getElementById("bubbleVersion").textContent = version;
+  const body = document.getElementById("bubbleVerseBody");
+  body.replaceChildren(bodyNode);
+  body.scrollTop = 0;
+
+  backdrop.style.display = "block";
+  bubble.style.display = "block";
+  bubble.classList.remove("below");
+
+  const rect = event.target.getBoundingClientRect();
+  // offsetWidth/Height give the real size; getBoundingClientRect would be shrunk by the pop-in animation
+  const bubbleRect = { width: bubble.offsetWidth, height: bubble.offsetHeight };
+
+  let left = Math.max(16, Math.min(window.innerWidth - bubbleRect.width - 16, rect.left - 20));
+  let top = rect.top - bubbleRect.height - 24;
+
+  // Not enough room above the reference: show the bubble below it instead
+  if (top < 16) {
+    top = rect.bottom + 24;
+    bubble.classList.add("below");
+  }
+  top = Math.max(16, Math.min(window.innerHeight - bubbleRect.height - 16, top));
+
+  bubble.style.left = `${left}px`;
+  bubble.style.top = `${top}px`;
+}
+
+function closeScripture() {
+  document.getElementById("thoughtBubble").style.display = "none";
+  document.getElementById("bubbleBackdrop").style.display = "none";
+}
+
+const STORAGE_KEY_CHAPTERS = "bavinck_imported_chapters_v1";
+const STORAGE_KEY_SCRIPTURES = "bavinck_imported_scriptures_v1";
+
+function loadSavedPacks() {
+  try {
+    const savedScrip = JSON.parse(localStorage.getItem(STORAGE_KEY_SCRIPTURES) || "{}");
+    Object.assign(SCRIPTURES, savedScrip);
+
+    const savedChaps = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAPTERS) || "[]");
+    savedChaps.forEach(ch => {
+      const existingIdx = CHAPTERS.findIndex(c => c.id === ch.id);
+      if (existingIdx >= 0) CHAPTERS[existingIdx] = ch;
+      else CHAPTERS.push(ch);
+    });
+  } catch (err) {
+    console.error("Failed to load saved packs:", err);
+  }
+}
+
+function handleJsonImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const pack = JSON.parse(e.target.result);
+      if (!pack.chapters || !Array.isArray(pack.chapters)) {
+        alert("Invalid chapter pack format.");
+        return;
+      }
+
+      // Merge scriptures into memory & localStorage
+      const savedScrip = JSON.parse(localStorage.getItem(STORAGE_KEY_SCRIPTURES) || "{}");
+      if (pack.scriptures) {
+        Object.assign(SCRIPTURES, pack.scriptures);
+        Object.assign(savedScrip, pack.scriptures);
+        localStorage.setItem(STORAGE_KEY_SCRIPTURES, JSON.stringify(savedScrip));
+      }
+
+      // Merge chapters into memory & localStorage
+      const savedChaps = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAPTERS) || "[]");
+      const firstNewId = pack.chapters.length ? pack.chapters[0].id : null;
+      pack.chapters.forEach(ch => {
+        const memIdx = CHAPTERS.findIndex(c => c.id === ch.id);
+        if (memIdx >= 0) CHAPTERS[memIdx] = ch;
+        else CHAPTERS.push(ch);
+
+        const storeIdx = savedChaps.findIndex(c => c.id === ch.id);
+        if (storeIdx >= 0) savedChaps[storeIdx] = ch;
+        else savedChaps.push(ch);
+      });
+
+      localStorage.setItem(STORAGE_KEY_CHAPTERS, JSON.stringify(savedChaps));
+      event.target.value = "";
+
+      sortChapters();
+      const firstNewIdx = CHAPTERS.findIndex(c => c.id === firstNewId);
+      if (firstNewIdx >= 0) switchChapter(firstNewIdx, false);
+      else renderChapter();
+
+      alert(`Imported ${pack.chapters.length} chapter(s) successfully!`);
+    } catch (err) {
+      alert("Could not parse JSON file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* ------------------------------------------------------------------
+ * Bible references: find them in the text and show the verses from the
+ * built-in World English Bible (public domain)
+ * ------------------------------------------------------------------ */
+
+// Book codes used in assets/web_bible.txt, with the names/abbreviations the book uses for them
+const BIBLE_BOOKS = [
+  ["GEN", "Genesis", "Gen", "Gn"], ["EXO", "Exodus", "Exod", "Exo", "Ex"], ["LEV", "Leviticus", "Lev", "Lv"],
+  ["NUM", "Numbers", "Num", "Nm"], ["DEU", "Deuteronomy", "Deut", "Deu", "Dt"], ["JOS", "Joshua", "Josh"],
+  ["JDG", "Judges", "Judg", "Jdg"], ["RUT", "Ruth"], ["1SA", "1 Samuel", "1 Sam"], ["2SA", "2 Samuel", "2 Sam"],
+  ["1KI", "1 Kings", "1 Kgs", "1 Ki"], ["2KI", "2 Kings", "2 Kgs", "2 Ki"],
+  ["1CH", "1 Chronicles", "1 Chron", "1 Chr"], ["2CH", "2 Chronicles", "2 Chron", "2 Chr"],
+  ["EZR", "Ezra"], ["NEH", "Nehemiah", "Neh"], ["EST", "Esther", "Esth"], ["JOB", "Job"],
+  ["PSA", "Psalms", "Psalm", "Pss", "Psa", "Ps"], ["PRO", "Proverbs", "Prov", "Prv"],
+  ["ECC", "Ecclesiastes", "Eccles", "Eccl", "Ecc"],
+  ["SOL", "Song of Solomon", "Song of Songs", "Song", "Cant"], ["ISA", "Isaiah", "Isa"], ["JER", "Jeremiah", "Jer"],
+  ["LAM", "Lamentations", "Lam"], ["EZE", "Ezekiel", "Ezek", "Eze"], ["DAN", "Daniel", "Dan"],
+  ["HOS", "Hosea", "Hos"], ["JOE", "Joel"], ["AMO", "Amos"], ["OBA", "Obadiah", "Obad"], ["JON", "Jonah"],
+  ["MIC", "Micah", "Mic"], ["NAH", "Nahum", "Nah"], ["HAB", "Habakkuk", "Hab"], ["ZEP", "Zephaniah", "Zeph"],
+  ["HAG", "Haggai", "Hag"], ["ZEC", "Zechariah", "Zech"], ["MAL", "Malachi", "Mal"],
+  ["MAT", "Matthew", "Matt", "Mt"], ["MAR", "Mark", "Mk"], ["LUK", "Luke", "Lk"], ["JOH", "John", "Jn"],
+  ["ACT", "Acts"], ["ROM", "Romans", "Rom"], ["1CO", "1 Corinthians", "1 Cor"], ["2CO", "2 Corinthians", "2 Cor"],
+  ["GAL", "Galatians", "Gal"], ["EPH", "Ephesians", "Eph"], ["PHI", "Philippians", "Phil", "Php"],
+  ["COL", "Colossians", "Col"], ["1TH", "1 Thessalonians", "1 Thess", "1 Thes"],
+  ["2TH", "2 Thessalonians", "2 Thess", "2 Thes"], ["1TI", "1 Timothy", "1 Tim"], ["2TI", "2 Timothy", "2 Tim"],
+  ["TIT", "Titus", "Tit"], ["PHM", "Philemon", "Philem", "Phlm"], ["HEB", "Hebrews", "Heb"],
+  ["JAM", "James", "Jas"], ["1PE", "1 Peter", "1 Pet", "1 Pt"], ["2PE", "2 Peter", "2 Pet", "2 Pt"],
+  ["1JO", "1 John", "1 Jn"], ["2JO", "2 John", "2 Jn"], ["3JO", "3 John", "3 Jn"], ["JUD", "Jude"],
+  ["REV", "Revelation", "Revelations", "Rev"]
+];
+
+const BOOK_CODE_BY_NAME = {};
+BIBLE_BOOKS.forEach(([code, ...names]) => names.forEach(n => {
+  BOOK_CODE_BY_NAME[n.toLowerCase().replace(/\s+/g, "")] = code;
+}));
+
+// Longest names first so "1 John" wins over "John" and "Psalms" over "Ps"
+const BOOK_NAME_PATTERN = BIBLE_BOOKS.flatMap(([, ...names]) => names)
+  .sort((a, b) => b.length - a.length)
+  .map(n => n.replace(/ /g, "\\s?"))
+  .join("|");
+
+// One chapter:verse item, e.g. "8:28", "8:28-30", "8:28-9:2", plus extra verses ", 31, 35-37"
+const CV = "\\d{1,3}:\\d{1,3}(?:\\s?[-–—]\\s?\\d{1,3}(?::\\d{1,3})?)?(?:,\\s?\\d{1,3}(?:\\s?[-–—]\\s?\\d{1,3})?(?![\\d:]))*";
+// Book + one or more chapter:verse items separated by ";" (e.g. "Rom. 1:20; 2:14-15")
+const SCRIPTURE_REF_RE = new RegExp(
+  `(?<![A-Za-z\\d])((?:${BOOK_NAME_PATTERN}))\\.?\\s(${CV}(?:;\\s?${CV})*)`, "g");
+
+// "Rom. 8:28-30; 9:1" -> [{book:"ROM",c:8,v1:28,v2:30}, {book:"ROM",c:9,v1:1,v2:1}]
+function parseScriptureRef(text) {
+  const passages = [];
+  SCRIPTURE_REF_RE.lastIndex = 0;
+  let m;
+  while ((m = SCRIPTURE_REF_RE.exec(text))) {
+    const book = BOOK_CODE_BY_NAME[m[1].toLowerCase().replace(/\s+/g, "")];
+    if (book) passages.push(...parseChapterVerses(book, m[2]));
+  }
+  return passages;
+}
+
+function parseChapterVerses(book, list) {
+  const passages = [];
+  for (const group of list.split(";")) {
+    const parts = group.split(",").map(s => s.trim()).filter(Boolean);
+    let chapter = null;
+    for (const part of parts) {
+      let m = part.match(/^(\d+):(\d+)(?:\s?[-–—]\s?(\d+)(?::(\d+))?)?$/);
+      if (m) {
+        chapter = +m[1];
+        const v1 = +m[2];
+        if (m[4]) {
+          // Crosses into the next chapter, e.g. 8:38-9:2
+          passages.push({ book, c: chapter, v1, v2: 999 });
+          passages.push({ book, c: +m[3], v1: 1, v2: +m[4] });
+          chapter = +m[3];
+        } else {
+          passages.push({ book, c: chapter, v1, v2: m[3] ? +m[3] : v1 });
+        }
+        continue;
+      }
+      m = part.match(/^(\d+)(?:\s?[-–—]\s?(\d+))?$/);
+      if (m && chapter !== null) passages.push({ book, c: chapter, v1: +m[1], v2: m[2] ? +m[2] : +m[1] });
+    }
+  }
+  return passages;
+}
+
+function encodePassages(passages) {
+  return passages.map(p => `${p.book}.${p.c}.${p.v1}.${p.v2}`).join("|");
+}
+
+function decodePassages(code) {
+  return (code || "").split("|").filter(Boolean).map(s => {
+    const [book, c, v1, v2] = s.split(".");
+    return { book, c: +c, v1: +v1, v2: +v2 };
+  });
+}
+
+// Wraps every Bible reference in already-escaped HTML text with a tappable span
+function linkifyScriptureRefs(html) {
+  return html.replace(SCRIPTURE_REF_RE, (match, name, list) => {
+    const book = BOOK_CODE_BY_NAME[name.toLowerCase().replace(/\s+/g, "")];
+    const passages = book ? parseChapterVerses(book, list) : [];
+    if (!passages.length) return match;
+    return `<span class="scripture-ref" data-ref="${encodePassages(passages)}" onclick="openVerseRef(event, this)">${match}</span>`;
+  });
+}
+
+// Builds the bubble body: verse numbers in small raised text when more than one verse is shown
+function buildVerseBody(passages) {
+  const frag = document.createDocumentFragment();
+  if (!window.AndroidBible) {
+    frag.append("Verse text is available in the app.");
+    return frag;
+  }
+  let total = 0;
+  const results = passages.map(p => {
+    let verses = [];
+    try { verses = JSON.parse(window.AndroidBible.lookup(p.book, p.c, p.v1, p.v2)); } catch (err) { /* ignore */ }
+    total += verses.length;
+    return { p, verses };
+  });
+  if (!total) {
+    frag.append("Sorry, this verse couldn't be found.");
+    return frag;
+  }
+  const showNumbers = total > 1;
+  results.forEach(({ p, verses }, i) => {
+    if (results.length > 1 && verses.length) {
+      if (i > 0) frag.append(document.createElement("br"));
+      const label = document.createElement("strong");
+      label.textContent = `${p.c}:${p.v1}${p.v2 !== p.v1 && p.v2 !== 999 ? "–" + p.v2 : ""} `;
+      frag.append(label);
+    }
+    verses.forEach(v => {
+      if (showNumbers) {
+        const num = document.createElement("span");
+        num.className = "verse-num";
+        num.textContent = v.v;
+        frag.append(num);
+      }
+      frag.append(`${v.t} `);
+    });
+  });
+  return frag;
+}
+
+/* ------------------------------------------------------------------
+ * Download chapters from the book's website
+ * ------------------------------------------------------------------ */
+const BOOK_BASE_URL = "https://www.uecf.net/books/wonderful-works-of-god-bavinck/";
+
+// One entry per page on the website, in book order. The first three are built into the app.
+const BOOK_TOC = [
+  "Foreword", "Preface", "1. The Highest Good", "2. The Knowledge of God",
+  "3. General Revelation", "4. The Value of General Revelation",
+  "5. Special Revelation: The Manner of Revelation", "6. Special Revelation: The Content of Revelation",
+  "7. The Holy Scriptures", "8. Scripture and Confession", "9. The Being of God",
+  "10. The Trinity of God", "11. Creation and Providence", "12. Origin, Being, and Destiny of Mankind",
+  "13. Sin and Death", "14. The Covenant of Grace", "15. The Mediator of the Covenant",
+  "16. The Divine and Human Nature of Christ", "17. The Work of Christ in His Humiliation",
+  "18. The Work of Christ in His Exaltation", "19. The Gift of the Holy Spirit", "20. The Calling",
+  "21. Justification", "22. Sanctification", "23. The Church of Christ", "24. Eternal Life"
+].map((title, i) => {
+  const page = i + 1;
+  const builtInIds = ["foreword", "preface", "chapter1"];
+  return {
+    page,
+    title,
+    id: builtInIds[i] || `chapter${page - 2}`,
+    label: page <= 2 ? `Section ${page}` : `Chapter ${page - 2}`,
+    builtIn: i < builtInIds.length
+  };
+});
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+// Utterance ids use the chapter id (not its position) so playback survives chapters being added
+function currentUtteranceId() {
+  return `${CHAPTERS[currentChapterIdx].id}__para${currentParaIdx}`;
+}
+
+// Keep chapters in book order; imported chapters that aren't part of the book go at the end
+function chapterOrder(ch) {
+  const entry = BOOK_TOC.find(t => t.id === ch.id);
+  return entry ? entry.page : 1000;
+}
+
+function sortChapters() {
+  const currentId = CHAPTERS[currentChapterIdx] && CHAPTERS[currentChapterIdx].id;
+  CHAPTERS.sort((a, b) => chapterOrder(a) - chapterOrder(b));
+  const idx = CHAPTERS.findIndex(c => c.id === currentId);
+  currentChapterIdx = idx >= 0 ? idx : 0;
+}
+
+// --- Talking to the app's downloader ---
+let nextFetchId = 1;
+const pendingFetches = {};
+
+window.onNativeFetchDone = function(id, ok, body) {
+  const pending = pendingFetches[id];
+  if (!pending) return;
+  delete pendingFetches[id];
+  if (ok) pending.resolve(body);
+  else pending.reject(new Error(body));
+};
+
+function fetchBookPage(page) {
+  const url = `${BOOK_BASE_URL}chapter${page}.html`;
+  if (window.AndroidNet) {
+    return new Promise((resolve, reject) => {
+      const id = nextFetchId++;
+      pendingFetches[id] = { resolve, reject };
+      window.AndroidNet.fetchPage(url, id);
+    });
+  }
+  // Fallback when opened in a normal browser
+  return fetch(url).then(r => {
+    if (!r.ok) throw new Error(`The website replied with error ${r.status}`);
+    return r.text();
+  });
+}
+
+// --- Turning a website page into clean paragraphs ---
+// Ends like a finished sentence (allowing closing quotes/brackets)
+const SENTENCE_END = /[.!?;:"”’')\]…]$/;
+
+function normWords(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+// The site's Foreword page starts with leftover bits of the table of contents
+function isTableOfContentsJunk(text) {
+  let rest = ` ${normWords(text)} `;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const entry of BOOK_TOC) {
+      const words = ` ${normWords(entry.title)} `;
+      if (rest.includes(words)) {
+        rest = rest.split(words).join(" ");
+        changed = true;
+      }
+    }
+  }
+  return /^[\d ]*$/.test(rest);
+}
+
+// Each chapter's title is glued onto the front of its first paragraph
+function stripTitlePrefix(text, titles) {
+  for (const title of titles) {
+    const want = normWords(title).split(" ").filter(Boolean);
+    if (!want.length) continue;
+    const re = /[A-Za-z0-9]+/g;
+    let i = 0, end = 0, m;
+    while (i < want.length && (m = re.exec(text))) {
+      if (m[0].toLowerCase() !== want[i]) break;
+      i++;
+      end = re.lastIndex;
+    }
+    if (i === want.length) return text.slice(end).replace(/^[\s.:–—-]+/, "");
+  }
+  return text;
+}
+
+// The site splits paragraphs wherever the printed book had a page break, often mid-sentence
+function mergeBrokenParagraphs(paras) {
+  const out = [];
+  for (const p of paras) {
+    const prev = out[out.length - 1];
+    // Short unfinished lines are headings (e.g. "Study Questions"), so leave them alone
+    if (prev !== undefined && prev.length > 40 && !SENTENCE_END.test(prev)) {
+      const hyphenated = /[a-z]-$/.test(prev) && /^[a-z]/.test(p);
+      out[out.length - 1] = hyphenated ? prev.slice(0, -1) + p : `${prev} ${p}`;
+    } else {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+// Returns { spill, paras }. The website's page breaks are shifted: a page often starts with the
+// last part of the PREVIOUS chapter (usually its final study questions) before this chapter's
+// title. That leading part is returned as `spill` so it can be moved back where it belongs.
+function parseBookPage(html, entry) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const article = doc.querySelector("article.reader") || doc.querySelector("article");
+  if (!article) throw new Error("Could not find the chapter text on the page");
+
+  const heading = article.querySelector("h2");
+  let paras = Array.from(article.querySelectorAll("p"))
+    .filter(p => !p.closest("nav") && !p.closest(".reader-tools") && !p.querySelector("a.tool"))
+    .map(p => p.textContent.replace(/\s+/g, " ").trim()
+      .replace(/^(\d+)\s+\.\s/, "$1. "))          // "10 . How" -> "10. How"
+    .filter(text => /[A-Za-z0-9]/.test(text));      // drop separator lines like "-----"
+
+  // 1. Drop leftover table-of-contents lines at the top
+  while (paras.length && isTableOfContentsJunk(paras[0])) paras.shift();
+
+  // 2. Find where this chapter really starts: the paragraph beginning with its title
+  const titles = [heading ? heading.textContent.trim() : "", entry.title,
+                  entry.title.replace(/\(.*?\)/g, "")].filter(Boolean);
+  let start = paras.findIndex(p => stripTitlePrefix(p, titles) !== p);
+  let spill = [];
+  if (start >= 0) {
+    spill = paras.slice(0, start);
+    paras = paras.slice(start);
+    // 3. Remove the title from the front of that paragraph
+    paras[0] = stripTitlePrefix(paras[0], titles);
+    if (!paras[0]) paras.shift();
+  } else if (paras.length && /^[a-z]/.test(paras[0])) {
+    // Title not found: at least move text that starts mid-sentence back to the previous chapter
+    while (paras.length) {
+      const p = paras.shift();
+      spill.push(p);
+      if (SENTENCE_END.test(p)) break;
+    }
+  }
+
+  // 4. Re-join paragraphs split by page breaks
+  return { spill, paras: mergeBrokenParagraphs(paras) };
+}
+
+// Pages fetched during one download run, so each page is only downloaded once
+let pageCache = new Map();
+
+function fetchBookPageCached(page) {
+  if (!pageCache.has(page)) {
+    const promise = fetchBookPage(page);
+    promise.catch(() => pageCache.delete(page));   // allow a retry after a failure
+    pageCache.set(page, promise);
+  }
+  return pageCache.get(page);
+}
+
+async function downloadBookChapter(entry) {
+  let { paras } = parseBookPage(await fetchBookPageCached(entry.page), entry);
+  if (!paras.length) throw new Error("The page had no chapter text");
+
+  // 5. This chapter's ending (often its last study questions) is at the top of the next page
+  if (entry.page < BOOK_TOC.length) {
+    try {
+      const next = parseBookPage(await fetchBookPageCached(entry.page + 1), BOOK_TOC[entry.page]);
+      if (next.spill.length) paras = mergeBrokenParagraphs(paras.concat(next.spill));
+    } catch (err) {
+      console.warn("Could not fetch the end of the chapter:", err);
+    }
+  }
+
+  return {
+    id: entry.id,
+    label: entry.label,
+    title: entry.title,
+    subtitle: "",
+    source: "web",
+    cleanupVersion: CLEANUP_VERSION,
+    // Only plain text is stored (shown escaped) to keep saved chapters small
+    paragraphs: paras.map(raw => ({ raw }))
+  };
+}
+
+function saveChapter(ch) {
+  const memIdx = CHAPTERS.findIndex(c => c.id === ch.id);
+  if (memIdx >= 0) CHAPTERS[memIdx] = ch;
+  else CHAPTERS.push(ch);
+  sortChapters();
+
+  const savedChaps = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAPTERS) || "[]");
+  const storeIdx = savedChaps.findIndex(c => c.id === ch.id);
+  if (storeIdx >= 0) savedChaps[storeIdx] = ch;
+  else savedChaps.push(ch);
+  try {
+    localStorage.setItem(STORAGE_KEY_CHAPTERS, JSON.stringify(savedChaps));
+  } catch (err) {
+    throw new Error("The phone's storage for this app is full, so the chapter can't be saved");
+  }
+}
+
+// --- The panel ---
+let downloadBusy = false;
+
+// Bump this when the text clean-up changes, so older downloads are offered as updates
+const CLEANUP_VERSION = 2;
+
+function isChapterPresent(entry) {
+  return CHAPTERS.some(c => c.id === entry.id);
+}
+
+function needsDownload(entry) {
+  if (entry.builtIn) return false;
+  const ch = CHAPTERS.find(c => c.id === entry.id);
+  return !ch || (ch.source === "web" && ch.cleanupVersion !== CLEANUP_VERSION);
+}
+
+function renderDownloadList() {
+  document.getElementById("dlList").innerHTML = BOOK_TOC.map(entry => {
+    let action;
+    if (entry.builtIn) action = `<span class="dl-state">Built in</span>`;
+    else if (isChapterPresent(entry)) action = `<span class="dl-state">${needsDownload(entry) ? "Update needed" : "✓ Saved"}</span>
+        <button class="icon-btn" onclick="downloadOne(${entry.page})" ${downloadBusy ? "disabled" : ""}>Update</button>`;
+    else action = `<button class="icon-btn" onclick="downloadOne(${entry.page})" ${downloadBusy ? "disabled" : ""}>Download</button>`;
+    return `<li class="dl-item"><span>${escapeHtml(entry.title)}</span><span>${action}</span></li>`;
+  }).join("");
+  const missing = BOOK_TOC.filter(needsDownload).length;
+  const allBtn = document.getElementById("dlAllBtn");
+  allBtn.disabled = downloadBusy || missing === 0;
+  allBtn.textContent = missing ? `Download all (${missing})` : "All saved";
+}
+
+function setDownloadStatus(text) {
+  document.getElementById("dlStatus").textContent = text;
+}
+
+function openDownloadPanel() {
+  renderDownloadList();
+  if (!downloadBusy) setDownloadStatus("Chapters are saved on this phone, so they work offline afterwards.");
+  document.getElementById("downloadBackdrop").style.display = "block";
+  document.getElementById("downloadPanel").style.display = "flex";
+}
+
+function closeDownloadPanel() {
+  document.getElementById("downloadBackdrop").style.display = "none";
+  document.getElementById("downloadPanel").style.display = "none";
+}
+
+async function runDownloads(entries) {
+  if (downloadBusy || !entries.length) return;
+  downloadBusy = true;
+  pageCache = new Map();
+  renderDownloadList();
+  const failed = [];
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    setDownloadStatus(`Downloading ${entry.title}… (${i + 1} of ${entries.length})`);
+    try {
+      saveChapter(await downloadBookChapter(entry));
+    } catch (err) {
+      console.error(`Download failed for ${entry.title}:`, err);
+      failed.push(`${entry.title} (${err.message})`);
+      if (/storage/.test(err.message)) break;
+    }
+    renderDownloadList();
+    renderChapter();
+  }
+  downloadBusy = false;
+  renderDownloadList();
+  setDownloadStatus(failed.length
+    ? `Some chapters didn't download: ${failed.join("; ")}. Check your internet connection and try again.`
+    : `Done! ${entries.length} chapter${entries.length === 1 ? "" : "s"} saved.`);
+}
+
+function downloadOne(page) {
+  runDownloads([BOOK_TOC[page - 1]]);
+}
+
+function downloadAllMissing() {
+  runDownloads(BOOK_TOC.filter(needsDownload));
+}
+
+loadSavedPacks();
+sortChapters();
+renderChapter();
+populateVoices();
+</script>
+</body>
+</html>

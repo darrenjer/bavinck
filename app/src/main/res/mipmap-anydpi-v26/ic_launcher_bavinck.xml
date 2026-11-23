@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alternative app icon (Bavinck with headphones). The book icon is still in ic_launcher.xml. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Grey that matches the photo's background -->
+    <background android:drawable="@color/ic_launcher_bavinck_background" />
+    <foreground android:drawable="@drawable/ic_launcher_bavinck_foreground" />
+    <!-- A photo can't be shown in one colour, so "themed icons" use the book artwork -->
+    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>

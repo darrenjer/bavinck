@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App icon artwork: an open book with headphones. Kept inside the 66dp safe zone of the 108dp canvas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Left page -->
+    <path
+        android:fillColor="#FAF6F0"
+        android:pathData="M53,48 C47,44.5 40,44 33,45 L33,74 C40,73 47,73.5 53,77 Z" />
+    <!-- Right page -->
+    <path
+        android:fillColor="#FAF6F0"
+        android:pathData="M55,48 C61,44.5 68,44 75,45 L75,74 C68,73 61,73.5 55,77 Z" />
+
+    <!-- Lines of text -->
+    <path
+        android:strokeColor="#C9B49A"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:pathData="M41,56 C44,55.6 47,55.8 50,56.6 M41,61 C44,60.6 47,60.8 50,61.6 M41,66 C44,65.6 47,65.8 50,66.6 M58,56.6 C61,55.8 64,55.6 67,56 M58,61.6 C61,60.8 64,60.6 67,61 M58,66.6 C61,65.8 64,65.6 67,66" />
+
+    <!-- Headphone band -->
+    <path
+        android:strokeColor="#F4D078"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M35,55 L35,50 A19,19 0 0 1 73,50 L73,55" />
+    <!-- Ear cups -->
+    <path
+        android:fillColor="#F4D078"
+        android:pathData="M33,51 L39,51 L39,65 L33,65 Q30,65 30,62 L30,54 Q30,51 33,51 Z" />
+    <path
+        android:fillColor="#F4D078"
+        android:pathData="M75,51 L69,51 L69,65 L75,65 Q78,65 78,62 L78,54 Q78,51 75,51 Z" />
+</vector>

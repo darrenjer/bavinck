@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.BavinckAudiobook" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#6D4C41</item>
+        <item name="colorPrimaryVariant">#4E342E</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor">#4E342E</item>
+    </style>
+</resources>

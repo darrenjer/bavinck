@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chunky fluorescent pink headphones (original drawing, no brand logo). The band goes over his
+     head and tucks onto his hair on the far side; the single ear cup covers his right ear
+     (left side of the picture). Coordinates match bavinck_head.png on the 108dp canvas. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Head band: shadow edge, main band, glossy highlight -->
+    <path
+        android:strokeColor="#C4008C"
+        android:strokeWidth="6.5"
+        android:strokeLineCap="round"
+        android:pathData="M35,54 C33,33 46,26.5 57,27 C65,27.5 70,32 71.5,38" />
+    <path
+        android:strokeColor="#FF14B8"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M35,53 C33,32 46,25.5 57,26 C65,26.5 70,31 71.5,37" />
+    <path
+        android:strokeColor="#FF9BE0"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:pathData="M36.3,47 C36,33 47,27 57,27.4 C63,27.8 67,30.3 69,33.5" />
+
+    <!-- Yoke joining the band to the ear cup -->
+    <path
+        android:fillColor="#E0009E"
+        android:pathData="M31,50 L39,50 L38,57 L32,57 Z" />
+
+    <!-- Ear cup over his right ear: shadow rim, cup, inner cushion, centre disc, shine -->
+    <path
+        android:fillColor="#C4008C"
+        android:pathData="M34.8,52.6 A9.2,11.7 0 1 1 34.79,52.6 Z" />
+    <path
+        android:fillColor="#FF14B8"
+        android:pathData="M34,53 A8.5,11 0 1 1 33.99,53 Z" />
+    <path
+        android:fillColor="#FF5CCB"
+        android:pathData="M34,57.2 A5.2,6.8 0 1 1 33.99,57.2 Z" />
+    <path
+        android:fillColor="#FF14B8"
+        android:pathData="M34,60.9 A2.3,3.1 0 1 1 33.99,60.9 Z" />
+    <path
+        android:strokeColor="#CCFFFFFF"
+        android:strokeWidth="1.3"
+        android:strokeLineCap="round"
+        android:pathData="M28.5,59 C29.5,56.5 31,55.3 32.5,54.8" />
+</vector>

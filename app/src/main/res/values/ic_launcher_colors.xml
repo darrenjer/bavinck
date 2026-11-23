@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same brown as the app's accent colour -->
+    <color name="ic_launcher_background">#7A4B2A</color>
+    <!-- Solid dark blue-grey so the face and pink headphones stand out -->
+    <color name="ic_launcher_bavinck_background">#1E3A4C</color>
+</resources>
